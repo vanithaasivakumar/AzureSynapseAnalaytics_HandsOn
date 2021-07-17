@@ -1,0 +1,25 @@
+{
+	"name": "DestinationDataset_vmb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dp203asaworkspace-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "robberies.tsv",
+				"folderPath": "synapse/workspaces/dp203asaworkspace/warehouse/blobdata",
+				"fileSystem": "dp203"
+			},
+			"columnDelimiter": "\t",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}
