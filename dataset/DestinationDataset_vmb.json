@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "robberies.tsv",
 				"folderPath": "synapse/workspaces/dp203asaworkspace/warehouse/blobdata",
 				"fileSystem": "dp203"
 			},
