@@ -10,11 +10,14 @@
 						"type": "LinkedServiceReference"
 					},
 					"name": "sourceRobbers"
+				},
+				{
+					"name": "hasskills"
 				}
 			],
 			"sinks": [],
 			"transformations": [],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100,\n\tignoreNoFilesFound: false,\n\tformat: 'delimited',\n\tfileSystem: 'dp203',\n\tfolderPath: 'synapse/workspaces/dp203asaworkspace/warehouse/blobdata',\n\tfileName: 'robbers_21.data.txt',\n\tcolumnDelimiter: '\\t',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: false) ~> sourceRobbers"
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100,\n\tignoreNoFilesFound: false,\n\tformat: 'delimited',\n\tfileSystem: 'dp203',\n\tfolderPath: 'synapse/workspaces/dp203asaworkspace/warehouse/blobdata',\n\tfileName: 'robbers_21.data.txt',\n\tcolumnDelimiter: '\\t',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: false) ~> sourceRobbers\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> hasskills"
 		}
 	}
 }
