@@ -12,12 +12,37 @@
 					"name": "sourceRobbers"
 				},
 				{
+					"dataset": {
+						"referenceName": "ds_hasskills",
+						"type": "DatasetReference"
+					},
 					"name": "hasskills"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
-			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100,\n\tignoreNoFilesFound: false,\n\tformat: 'delimited',\n\tfileSystem: 'dp203',\n\tfolderPath: 'synapse/workspaces/dp203asaworkspace/warehouse/blobdata',\n\tfileName: 'robbers_21.data.txt',\n\tcolumnDelimiter: '\\t',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: false) ~> sourceRobbers\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> hasskills"
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_blob_sink",
+						"type": "DatasetReference"
+					},
+					"name": "sinkJoinedfile"
+				}
+			],
+			"transformations": [
+				{
+					"name": "selectColumns2"
+				},
+				{
+					"name": "Aggregate1"
+				},
+				{
+					"name": "JoinSkillsCount"
+				},
+				{
+					"name": "selectColumns"
+				}
+			],
+			"script": "source(output(\n\t\t{_col0_} as string,\n\t\t{_col1_} as short,\n\t\t{_col2_} as short\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100,\n\tignoreNoFilesFound: false,\n\tformat: 'delimited',\n\tfileSystem: 'dp203',\n\tfolderPath: 'synapse/workspaces/dp203asaworkspace/warehouse/blobdata',\n\tfileName: 'robbers_21.data.txt',\n\tcolumnDelimiter: '\\t',\n\tescapeChar: '\\\\',\n\tquoteChar: '\\\"',\n\tcolumnNamesAsHeader: false) ~> sourceRobbers\nsource(output(\n\t\t{_col0_} as string,\n\t\t{_col1_} as string,\n\t\t{_col2_} as short,\n\t\t{_col3_} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> hasskills\nhasskills select(mapColumn(\n\t\tName = {_col0_},\n\t\tSkills = {_col1_}\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> selectColumns2\nselectColumns2 aggregate(groupBy(Name),\n\tSkillsCount = count(Skills)) ~> Aggregate1\nselectColumns, Aggregate1 join(selectColumns@Name == Aggregate1@Name,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> JoinSkillsCount\nsourceRobbers select(mapColumn(\n\t\tName = {_col0_},\n\t\tAge = {_col1_}\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> selectColumns\nJoinSkillsCount sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sinkJoinedfile"
 		}
 	}
 }
