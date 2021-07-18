@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "accomplices_21.data",
+				"fileName": "*",
 				"container": "roberrydata"
 			},
 			"columnDelimiter": "\t",

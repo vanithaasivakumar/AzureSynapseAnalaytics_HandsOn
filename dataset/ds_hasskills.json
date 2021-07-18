@@ -1,5 +1,5 @@
 {
-	"name": "DestinationDataset_vmb",
+	"name": "ds_hasskills",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "dp203asaworkspace-WorkspaceDefaultStorage",
@@ -10,15 +10,18 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "hasskills_21.data.txt",
 				"folderPath": "synapse/workspaces/dp203asaworkspace/warehouse/blobdata",
 				"fileSystem": "dp203"
 			},
 			"columnDelimiter": "\t",
 			"escapeChar": "\\",
-			"firstRowAsHeader": false,
 			"quoteChar": "\""
 		},
-		"schema": []
-	},
-	"type": "Microsoft.Synapse/workspaces/datasets"
+		"schema": [
+			{
+				"type": "String"
+			}
+		]
+	}
 }
