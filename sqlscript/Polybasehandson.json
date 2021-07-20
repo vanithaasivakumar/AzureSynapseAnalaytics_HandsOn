@@ -1,14 +1,14 @@
 {
-	"name": "SQL script 1",
+	"name": "Polybasehandson",
 	"properties": {
 		"content": {
-			"query": "create table serverless_temp(name varchar, age int)",
+			"query": "\n--create master key\n\n--drop database scoped credential cred_adls\n\nCREATE database scoped credential [cred_adls]\nwith\n    identity='datalakeexp'\n    ,secret='jcKmnfj0Q69v9myVJhNNNTdqgj4XkkrZmGaPNQpsUSJXmDRtzOoftGXKkfZ0vk/dfkxmskcyWlfFUsusEy+bIw=='\n\n--drop external data source ds_adlsdata\n\ncreate external data source ds_adlsdata\nWITH(\n    location='abfss://test@datalakeexp.blob.core.windows.net'\n    ,credential=cred_adls\n    ,TYPE=HADOOP\n)\n\ncreate external file format adls_file\nWITH(\n    FORMAT_TYPE=DELIMITEDTEXT\n    ,FORMAT_OPTIONS(\n          FIELD_TERMINATOR = '\\t',\n          USE_TYPE_DEFAULT = True)\n)\n\n--drop external table ext_tbl_robbers\n\ncreate external table ext_tbl_robbers\n(\n    name varchar(100)\n    ,age INT\n    ,number INT\n)\nWITH(\n    location = '/external_table/robbers_21.data'\n    ,DATA_SOURCE = ds_adlsdata\n    ,FILE_FORMAT = adls_file\n)\n\nselect * from ext_tbl_robbers\n",
 			"metadata": {
 				"language": "sql"
 			},
 			"currentConnection": {
-				"poolName": "Built-in",
-				"databaseName": "master"
+				"poolName": "dp203dedicatedsqlpool",
+				"databaseName": "dp203dedicatedsqlpool"
 			},
 			"resultLimit": 5000
 		},
